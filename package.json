@@ -1,0 +1,19 @@
+{
+  "name": "anvil-sdk-angularjs",
+  "version": "0.0.0",
+  "description": "Anvil Authorization Server SDK for AngularJS",
+  "main": "anvil.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/christiansmith/anvil-sdk-angularjs.git"
+  },
+  "author": "Christian Smith",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/christiansmith/anvil-sdk-angularjs/issues"
+  },
+  "homepage": "https://github.com/christiansmith/anvil-sdk-angularjs"
+}

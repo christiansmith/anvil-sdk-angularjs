@@ -1,0 +1,18 @@
+{
+  "name": "anvil-sdk-angularjs",
+  "version": "0.0.0",
+  "homepage": "https://github.com/christiansmith/anvil-sdk-angularjs",
+  "authors": [
+    "Christian Smith <smith@anvil.io>"
+  ],
+  "description": "Anvil Authorization Server SDK for AngularJS",
+  "main": "anvil.js",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
