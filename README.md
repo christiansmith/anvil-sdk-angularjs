@@ -1,5 +1,37 @@
 # Anvil SDK for AngularJS
 
+## Install
+
+    $ bower install https://github.com/christiansmith/anvil-sdk-angularjs.git
+
+## Configure
+
+    angular.module('yourApp', ['anvil'])
+      .config(function (OAuthProvider) {
+        OAuthProvider.configure(AUTH_SERVER_URL, {
+          client_id:     CLIENT_ID,
+          response_type: 'token',
+          redirect_uri:  APP_CALLBACK_URI,
+          scope:         SCOPE
+        })
+      })
+    
+
+## Usage
+
+    // initiate implicit auth flow
+    OAuth.authorize();
+
+    // handle response
+    OAuth.authorize($location.hash);
+
+    // make API requests with bearer token
+    OAuth({
+      url:    'https://api.tld/resource',
+      method: 'GET',
+      params: { ... }
+    });
+
 ## The MIT License
 
 Copyright (c) 2013 Christian Smith http://anvil.io
