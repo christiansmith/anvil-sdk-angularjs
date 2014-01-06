@@ -89,7 +89,7 @@ angular.module('anvil', [])
 
 
       /**
-       *
+       * Authorize
        */
 
       OAuth.authorize = function (authorization) {
@@ -100,28 +100,45 @@ angular.module('anvil', [])
             , credentials = parseFormUrlEncoded(authorization)
             ;
 
+          // handle authorization error
           if (credentials.error) {
             deferred.reject(credentials);
             OAuth.clearCredentials();
-          } else {
-            OAuth.credentials = credentials;
-            localStorage['credentials'] = JSON.stringify(credentials);
+          }
+
+          // handle successful authorization
+          else {
             deferred.resolve(credentials);
+            OAuth.setCredentials(credentials);
           }
 
           return deferred.promise;
-
         }
 
         // in this case, we're initiating the flow
         else {
-          $window.location = urls.authorize;
+          OAuth.redirect(urls.authorize);
         }
+
       };
 
 
       /**
-       *
+       * Redirect
+       */
+
+      OAuth.redirect = function (url) {
+        $window.location = url;
+      }
+
+
+      /**
+       * Popup
+       */
+
+
+      /**
+       * Account info
        */
 
       OAuth.accountInfo = function () {
@@ -131,8 +148,9 @@ angular.module('anvil', [])
         });
       }
 
+
       /**
-       *
+       * Authorized
        */
 
       OAuth.authorized = function () {
@@ -141,7 +159,7 @@ angular.module('anvil', [])
 
 
       /**
-       *
+       * Check authorization
        */
 
       OAuth.checkAuthorization = function () {
@@ -153,13 +171,24 @@ angular.module('anvil', [])
 
 
       /**
-       *
+       * Clear credentials
        */
 
       OAuth.clearCredentials = function () {
         delete OAuth.credentials;
         delete localStorage['credentials'];
-      }
+      };
+
+
+      /**
+       * Set credentials
+       */
+
+      OAuth.setCredentials = function (credentials) {
+        OAuth.credentials = credentials;
+        localStorage['credentials'] = JSON.stringify(credentials);
+      };
+
 
 
       /**
