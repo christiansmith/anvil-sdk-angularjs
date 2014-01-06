@@ -2,81 +2,26 @@
 
 angular.module('anvil', [])
 
-  .factory('User', function ($q, OAuth) {
 
-
-    /**
-     * CurrentUser Class
-     */
-
-    function CurrentUser () {
-      if (this.isAuthenticated()) {
-        var account = localStorage['account'];
-        if (typeof account === 'string') {
-          account = JSON.parse(account);
-          var key;
-          for (key in account) { this[key] = account[key] }
-        }
-      }
-    }
-
-
-    /**
-     * Prototype
-     */
-
-    CurrentUser.prototype = {
-
-      isAuthenticated: function () {
-        return OAuth.authorized();
-      },
-
-      cacheAccountInfo: function () {
-        var user = this;
-        return OAuth.accountInfo().then(function (response) {
-          var deferred = $q.defer();
-
-          var key, data = response.data;
-          for (key in data) { user[key] = data[key]; }
-          localStorage['account'] = JSON.stringify(user);
-          deferred.resolve();
-
-          return deferred.promise;
-        });
-      },
-
-      reset: function () {
-        var key;
-        for (key in this) { delete this[key]; }
-        OAuth.clearCredentials();
-        localStorage.removeItem('account');
-      }
-
-    };
-
-    return new CurrentUser();
-
-  })
-
-
-  .provider('OAuth', function () {
+  .provider('OAuth', function OAuthProvider () {
 
     /**
      * Private state
      */
 
-    var server, params, urls = {};
+    var provider, params, urls = {};
 
 
     /**
      * Provider configuration
      */
 
-    this.configure = function (server, params) {
-      server = server;
-      params = params;
-      urls.authorize = server + '/authorize?' + toFormUrlEncoded(params);
-      urls.account   = server + '/v1/account'
+    this.configure = function (url, options) {
+      this.provider  = provider = url;
+      this.params    = params   = options;
+      this.urls      = urls;
+      urls.authorize = provider + '/authorize?' + toFormUrlEncoded(params);
+      urls.account   = provider + '/v1/account'
     };
 
 
@@ -115,9 +60,9 @@ angular.module('anvil', [])
       return obj;
     }
 
-  
+
     this.$get = ['$q', '$http', '$window', function ($q, $http, $window) {
-    
+
       /**
        * OAuth Request
        */
@@ -142,7 +87,7 @@ angular.module('anvil', [])
         return deferred.promise;
       }
 
-      
+
       /**
        *
        */
@@ -166,8 +111,8 @@ angular.module('anvil', [])
 
           return deferred.promise;
 
-        } 
-        
+        }
+
         // in this case, we're initiating the flow
         else {
           $window.location = urls.authorize;
@@ -232,6 +177,63 @@ angular.module('anvil', [])
 
     }];
 
+
+  })
+
+
+  .factory('User', function ($q, OAuth) {
+
+
+    /**
+     * CurrentUser Class
+     */
+
+    function CurrentUser () {
+      if (this.isAuthenticated()) {
+        var account = localStorage['account'];
+        if (typeof account === 'string') {
+          account = JSON.parse(account);
+          var key;
+          for (key in account) { this[key] = account[key] }
+        }
+      }
+    }
+
+
+    /**
+     * Prototype
+     */
+
+    CurrentUser.prototype = {
+
+      isAuthenticated: function () {
+        return OAuth.authorized();
+      },
+
+      cacheAccountInfo: function () {
+        var user = this;
+        return OAuth.accountInfo().then(function (response) {
+          var deferred = $q.defer();
+
+          var key, data = response.data;
+          for (key in data) { user[key] = data[key]; }
+          localStorage['account'] = JSON.stringify(user);
+          deferred.resolve();
+
+          return deferred.promise;
+        });
+      },
+
+      reset: function () {
+        var key;
+        for (key in this) { delete this[key]; }
+        OAuth.clearCredentials();
+        localStorage.removeItem('account');
+      }
+
+    };
+
+    return new CurrentUser();
 
   })
 
