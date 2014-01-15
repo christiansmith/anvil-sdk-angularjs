@@ -90,14 +90,25 @@ describe 'OAuth', ->
 
   describe 'request', ->
 
-    it 'should set a bearer token', ->
+
+    {url,headers} = {}
+
+
+    beforeEach ->
       url = 'https://protected.api.tld/resource'
       headers =
         'Authorization': 'Bearer RANDOM'
         'Accept': 'application/json, text/plain, */*'
-      $httpBackend.expectGET(url, headers).respond(200, {})
       OAuth.setCredentials access_token: 'RANDOM'
+      $httpBackend.expectGET(url, headers).respond(200, { foo: 'bar' })
+
+    it 'should set a bearer token', ->
       OAuth({ method: 'GET', url: url })
+      $httpBackend.flush()
+
+    it 'should resolve response data', ->
+      OAuth({ method: 'GET', url: url }).then (response) ->
+        expect(response.foo).toBe 'bar'
       $httpBackend.flush()
 
 

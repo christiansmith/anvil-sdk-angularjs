@@ -76,7 +76,7 @@ angular.module('anvil', [])
                                         ;
 
         function success (response) {
-          deferred.resolve(response);
+          deferred.resolve(response.data);
         }
 
         function failure (fault) {
