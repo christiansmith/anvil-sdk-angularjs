@@ -198,6 +198,13 @@ angular.module('anvil', [])
 
 
       /**
+       * Provider
+       */
+
+      OAuth.provider = provider;
+
+
+      /**
        *
        */
 
