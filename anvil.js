@@ -190,6 +190,12 @@ angular.module('anvil', [])
       };
 
 
+      /**
+       * Expose urls
+       */
+
+      OAuth.urls = urls;
+
 
       /**
        *

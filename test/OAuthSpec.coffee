@@ -51,6 +51,13 @@ describe 'OAuth', ->
 
 
 
+  describe 'urls', ->
+
+    it 'should be exposed on the service', ->
+      expect(OAuth.urls.account).toContain url
+      expect(OAuth.urls.account).toContain '/v1/account'
+
+
 
   describe 'authorization', ->
 
